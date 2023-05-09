@@ -4,7 +4,7 @@ An instruction manual for teaching Linux From Scratch users how to make a Debian
 
 ## Why Debian from Scratch?
 
-The original [Linux from Scratch](https://en.wikipedia.org/wiki/Linux_From_Scratch) manual is purposefully vague as to what technique one should use to manage software dependencies. The suggestions that it gives, while no doubt being interesting exercises in package management, are not necessarily heavy-duty answers to a system administrator who intends on managing his time efficiently. 
+The original [Linux from Scratch](https://www.linuxfromscratch.org) manual is purposefully vague as to what technique one should use to manage software dependencies. The suggestions that it gives, while no doubt being interesting exercises in package management, are not necessarily heavy-duty answers to a system administrator who intends on managing his time efficiently. 
 
 The disadvantage of compiling everything to create a fully-fledged system is time. After one builds an LFS system for the first time, he/she is apt to realize that managing dependencies can be an arduous task, to say the least. Going through the insufferable exercise of hunting down dozens to possibly hundreds packages, mapping dependencies, configuring and installing these dependencies in the correct order, just to install a single piece of software, is not a viable alternative to a system administrator who values his time.
 
@@ -20,7 +20,7 @@ This project intends to be a community resource to help those interested in crea
 
 ## How to use this manual? 
 
-This manual is designed to be used after completing all instructions up to the end of Chapter 5 of the [Linux From Scratch book, version 7.9](http://www.linuxfromscratch.org/lfs/view/7.9/). One first follows the instructions of the original LFS book, and builds the temporary system that is created in LFS Chapter 5. One is required to have a fully-functional temporary system which the the outcome of Chapter 5. 
+This manual is designed to be used after completing all instructions up to the end of Chapter 6 of the [Linux From Scratch book, version 11.3](http://www.linuxfromscratch.org/lfs/view/11.3/). One first follows the instructions of the original LFS book, and builds the temporary system that is created in LFS Chapter 5 and 6. One is required to have a fully-functional temporary system which the the outcome of Chapter 5 and 6. 
 
 After completing the preliminary preparations, one then consults this manual and follows it step-by-step.
 
@@ -28,9 +28,9 @@ Like the original LFS manual, when dealing with packages to be compiled, each se
 
 ## Overview of our Method for Building a Custom Debian System
 
-In the original Linux From Scratch book, we created a cross-toolchain, using the toolchain native to our system. We then used this cross-toolchain to create a native toolchain, which ended up being the temporary '/tools' system environment. This was Chapter 5's goal. We then used this temporary system to build our final system, which was Chapter 6's goal.
+In the original Linux From Scratch book, we created a cross-toolchain, using the toolchain native to our system. We then used this cross-toolchain to create a native toolchain, which ended up being the temporary '/tools' system environment. Those were the goals of Chapter 5 and 6. We then used this temporary system to build our final system, which was Chapter 7's goal.
 
-In Debian From Scratch, we branch off from the end of Chapter 5. Instead of using the toolchain and other utilies installed in `/tools` to compile every single part of the final system, we instead use this toolset to compile and install Debian's package manager, dpkg  as the first part of our final system. 
+In Debian From Scratch, we branch off from the end of Chapter 6. Instead of using the toolchain and other utilies installed in `/tools` to compile every single part of the final system, we instead use this toolset to compile and install Debian's package manager, dpkg as the first part of our final system. 
 
 We then do some dependency hacking to satisfy all remaining dependencies needed to install apt. This allows us to rely on apt for the overwhelming majority of tasks involving the installation of software onto our new system, and to allow us to avoid the exercise in tedium that is manual dependency management.
 
@@ -45,56 +45,14 @@ The only source file you will need to download is the source for dpkg:
 
 [dpkg](http://http.debian.net/debian/pool/main/d/dpkg/dpkg_1.17.27.tar.xz)
 
-#### .deb files
+#### Needed files
 
-You will need to download the following .deb files and place them all in the same directory inside of your `$LFS` partition. Only these .deb files should occupy this directory. These are needed to install the entire dependency chain of `apt`. Open the link, and manually download the .deb file corresponding to your LFS system architecture:
+You will need to download the [wget-list](https://raw.githubusercontent.com/maalos/debian-from-scratch/master/wget-list) file and place it inside some directory inside of your `$LFS` partition, prefferably `$LFS/sources/dfs`. Packages inside the `wget-list` file are required to install the entire dependency chain of `apt`. Change into your preffered source directory and run:
 
-[apt](https://packages.debian.org/bullseye/apt)
-
-[debian-archive-keyring](https://packages.debian.org/bullseye/debian-archive-keyring)
-
-[dpkg](https://packages.debian.org/bullseye/dpkg)
-
-[gcc-4.9-base](https://packages.debian.org/bullseye/gcc-4.9-base)
-
-[gnupg](https://packages.debian.org/bullseye/gnupg)
-
-[gpgv](https://packages.debian.org/bullseye/gpgv)
-
-[libacl1](https://packages.debian.org/bullseye/libacl1)
-
-[libapt-pkg4.12](https://packages.debian.org/bullseye/libapt-pkg4.12)
-
-[libattr1](https://packages.debian.org/bullseye/libattr1)
-
-[libbz2-1.0](https://packages.debian.org/bullseye/libbz2-1.0)
-
-[libc6](https://packages.debian.org/bullseye/libc6)
-
-[libgcc1](https://packages.debian.org/bullseye/libgcc1)
-
-[liblzma5](https://packages.debian.org/bullseye/liblzma5)
-
-[libpcre3](https://packages.debian.org/bullseye/libpcre3)
-
-[libreadline6](https://packages.debian.org/bullseye/libreadline6)
-
-[libselinux1](https://packages.debian.org/bullseye/libselinux1)
-
-[libstdc++6](https://packages.debian.org/bullseye/libstdc++6)
-
-[libtinfo5](https://packages.debian.org/bullseye/libtinfo5)
-
-[libusb-0.1-4](https://packages.debian.org/bullseye/libusb-0.1-4)
-
-[multiarch-support](https://packages.debian.org/bullseye/multiarch-support)
-
-[readline-common](https://packages.debian.org/bullseye/readline-common)
-
-[tar](https://packages.debian.org/bullseye/tar)
-
-[zlib1g](https://packages.debian.org/bullseye/zlib1g)
-
+```
+wget https://raw.githubusercontent.com/maalos/debian-from-scratch/master/wget-list
+wget --input-file=wget-list --continue
+```
 
 ## Creating the Debian From Scratch system
 
@@ -102,24 +60,34 @@ All following commands need to be performed as `root`, so become the `root` user
 
 `su`
 
+Change the ownership of the $LFS directories
+
+```
+chown -R root:root $LFS/{usr,lib,var,etc,bin,sbin,tools,sources}
+case $(uname -m) in
+  x86_64) chown -R root:root $LFS/lib64 ;;
+esac
+```
+
 ### Preparing the virtual kernel filesystem mount points
 First we create the directories which are supposed to contain virtual kernel filesystems. These are filesystems which are located in memory only and created dynamically every time the kernel is loaded. 
 
 Each kind has a different purpose. The `devpts` contains device files for each pseudo terminal on your system. The `proc` contains information about every single process. The `sysfs` contains driver and device information. The `tmpfs` is a freely usable space which programs may use to store information in memory. 
 
 Since we have not built our kernel yet, we are forced to use the ones existing on our host system by mounting them in the appropriate locations in our target system. When our system is fully built, the new kernel will automatically mount these filesystems in their appropriate places.
+
 ```
 mkdir -pv $LFS/{dev,proc,sys,run}
-mknod -m 600 $LFS/dev/console c 5 1
-mknod -m 666 $LFS/dev/null c 1 3
 mount -v --bind /dev $LFS/dev
-mount -vt devpts devpts $LFS/dev/pts -o gid=5,mode=620
+mount -v --bind /dev/pts $LFS/dev/pts
 mount -vt proc proc $LFS/proc
 mount -vt sysfs sysfs $LFS/sys
 mount -vt tmpfs tmpfs $LFS/run
 
 if [ -h $LFS/dev/shm ]; then
   mkdir -pv $LFS/$(readlink $LFS/dev/shm)
+else
+  mount -t tmpfs -o nosuid,nodev tmpfs $LFS/dev/shm
 fi
 ```
 
@@ -128,22 +96,41 @@ fi
 We must now, as the `root` user on our host system, enter our base environment by changing our root directory into the final system's root directory, and use the temporary environment we've previously constructed to build our final system. Use the following command after you have become `root` on your host:
 
 ```
-chroot "$LFS" /tools/bin/env -i \
-HOME=/root                  \
-TERM="$TERM"                \
-PS1='\[\033[01m\][ \[\033[01;34m\]\u@\h\[\033[00m\]\[\033[01m\]]\[\033[01;32m\]\w\[\033[00m\]\n\[\033[01;34m\]$\[\033[00m\]> ' \
-PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin:/tools/sbin \
-/tools/bin/bash --login +h
+chroot "$LFS" /usr/bin/env -i   \
+    HOME=/root                  \
+    TERM="$TERM"                \
+    PS1='(lfs chroot) \u:\w\$ ' \
+    PATH=/usr/bin:/usr/sbin     \
+    /bin/bash --login
 ```
+
+#### WARNING: MAKE SURE YOU CHROOT CORRECTLY, OR YOU MIGHT END UP LIKE ME
+![apt on arch linux](https://github.com/maalos/debian-from-scratch/blob/master/images/Screenshot_20230509_144401.png)
+
+#### /etc/resolv.conf
+
+`/etc/resolv.conf` is a file needed in order for your system to have DNS resolution.
+
+```
+cat > /etc/resolv.conf << "EOF"
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+EOF
+```
+
+### Installing required packages for dpkg
+You need 3 more packages installed in your chroot environment (in the following order) for dpkg to build.
+https://www.linuxfromscratch.org/lfs/view/stable/chapter08/zlib.html
+https://www.linuxfromscratch.org/lfs/view/stable/chapter08/openssl.html
+https://www.linuxfromscratch.org/lfs/view/stable/chapter07/perl.html
 
 ### Installing dpkg
 
-With our `/tools` environment completely set up, we are ready to directly compile and install `dpkg` into our target environment. Replace the `build` variable with the appropriate architecture if it isn't 64-bit (which I am assuming that it is):
-
+With our `/tools` environment completely set up, we are ready to directly compile and install `dpkg` into our target environment.
 
 ```
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --build=x86_64-unknown-linux-gnu
-make
+make -j$(nproc)
 make install
 ```
 
@@ -152,87 +139,84 @@ We need to create `dpkg`'s database, which is merely a text file located in `/va
 
 `touch /var/lib/dpkg/status`
 
-##### Creating temporary links linking to /tools/bin/bash
-In order the for pre and post-installation scripts that come inside a standard .deb file to work, these need to be able to have access to a shell. These typically either specify using `/bin/sh` or `/bin/bash`. Without access to a shell at the exact location that the script specifies, the installation script will fail thus causing the installation of the package itself to fail.
-
-We must mitigate this problem by making sure that the `/bin` directory already exists, and then creating symlinks from these two locations towards the bash we have in our temporary `/tools` environment. 
-
-When we get to the point of installing debian's "priority:essential" packages, which include both of these shells, these symlinks will be overwritten with native copies of these binaries.
-
-```
-mkdir /bin
-ln /tools/bin/bash /bin/bash
-ln /tools/bin/bash /bin/sh
-```
-
-
 ### Installing apt
 
 Before we can install `apt`, and use this to automatically install the most of the rest of our system software, we have to install its immediate dependencies on our target system first.
 
-![](https://cdn.rawgit.com/scottwilliambeasley/debian-from-scratch/master/images/apt-dependencies.svg)
+![apt-dependencies.svg](https://raw.githubusercontent.com/maalos/debian-from-scratch/master/images/apt-dependencies.svg)
 ##### Figure 2 - The apt dependency tree, one level deep
 
 Each of these immediate dependencies has their own set of dependencies to fulfill. We shall start by completing the dependency tree for `debian-archive-keyring`. Unlike the compilation process needed to install `dpkg`, the process we now use to install software is by installing .`deb` files using `dpkg`. 
 
 #### Installing debian-archive-keyring
 
-So we shall start fulfilling `dpkg`'s dependencies by first by installing `debian-archive-keyring`. However, there is a problem here - we have a circular dependency as illustrated below.
+So we shall start fulfilling `dpkg`'s dependencies by first by installing `debian-archive-keyring`.
 
-![](https://cdn.rawgit.com/scottwilliambeasley/debian-from-scratch/master/images/debian-archive-keyring-deps.svg)
-##### Figure 3 - The debian-archive-keyring dependency tree, circular dependency in red
+First, we need to install `gcc-12-base`:
 
-`libgcc1` depends on `multiarch-support`, which depends on `libc6`, which depends on `libgcc1`. This is a major problem, as because none of these packages will fully install without having the others.
-
-In order to solve this seemingly impossible problem, we will need to bend the rules a little bit.
-
-First, we need to install `gcc-4.9-base`:
-
-`dpkg -i (location of gcc-4.9-base)`
+`dpkg -i gcc-12-base_12.2.0-14_amd64.deb`
 
 Then, we will need to install one package first in a partial way:
 
-`dpkg - i (LOCATION_OF_libgcc1)`
+`dpkg -i libgcc-12-dev_12.2.0-14_amd64.deb`
 
 NOTE: You will receive an error here, containing errors very similar to the following:
 
 ```
-Unpacking libc6:amd64 (2.28-10) over (2.28-10) ...
-dpkg: dependency problems prevent configuration of libc6:amd64:
- libc6:amd64 depends on libgcc1; however:
-  Package libgcc1:amd64 is not configured yet.
+Preparing to unpack libgcc-12-dev_12.2.0-14_amd64.deb ...
+Unpacking libgcc-12-dev:amd64 (12.2.0-14) over (12.2.0-18) ...
+dpkg: dependency problems prevent configuration of libgcc-12-dev:amd64:
+ libgcc-12-dev:amd64 depends on libgomp1 (>= 12.2.0-14); however:
+  Package libgomp1 is not installed.
+ libgcc-12-dev:amd64 depends on libitm1 (>= 12.2.0-14); however:
+  Package libitm1 is not installed.
+ libgcc-12-dev:amd64 depends on libatomic1 (>= 12.2.0-14); however:
+  Package libatomic1 is not installed.
+ libgcc-12-dev:amd64 depends on libasan8 (>= 12.2.0-14); however:
+  Package libasan8 is not installed.
+ libgcc-12-dev:amd64 depends on liblsan0 (>= 12.2.0-14); however:
+  Package liblsan0 is not installed.
+ libgcc-12-dev:amd64 depends on libtsan2 (>= 12.2.0-14); however:
+  Package libtsan2 is not installed.
+ libgcc-12-dev:amd64 depends on libubsan1 (>= 12.2.0-14); however:
+  Package libubsan1 is not installed.
+ libgcc-12-dev:amd64 depends on libquadmath0 (>= 12.2.0-14); however:
+  Package libquadmath0 is not installed.
 
-dpkg: error processing package libc6:amd64 (--install):
+dpkg: error processing package libgcc-12-dev:amd64 (--install):
  dependency problems - leaving unconfigured
 Errors were encountered while processing:
- libc6:amd64
+ libgcc-12-dev:amd64
 ```
 
 This is normal - at this point you cannot fully install any of these packages. You can only partially install them, which we will remedy later on.
 
 Once the package is installed, tweak the database to convince it that it -was- fully installed:
 
-`sed -ir 's/not-installed/installed/' /var/lib/dpkg/status`
+`sed -ir 's/unpacked/installed/' /var/lib/dpkg/status`
 
-Now install the other two packages in order:
+Now install the other three packages in order:
 
-`dpkg -i (location_of_multiarch)`
+```
+dpkg -i libgcc-s1_12.2.0-14_amd64.deb
+sed -ir 's/unpacked/installed/' /var/lib/dpkg/status
+dpkg -i libc6_2.36-9_amd64.deb
+dpkg -i multiarch-support_2.28-10+deb10u1_amd64.deb
+```
 
-`dpkg -i (location_of_libc6)`
+And reinstall libgcc to cover over our ugly little hack and complete the full installation of each package:
 
-And reinstall libgcc1 to cover over our ugly little hack and complete the full installation of each package:
-
-`dpkg -i --reinstall (location of libgcc1)`
+`dpkg -i libgcc-s1_12.2.0-14_amd64.deb`
 
 #### Installing the rest of apt's dependencies
 
-At this point, I am assuming that -all- of the .deb files you need to install have been placed in a single directory. Double check to see that you have all of these files. `cd` to this directory right now.
+At this point, I am assuming that -all- of the .deb files you need to install have been placed in a single directory. Double check to see that you have all of these files.
 
 The truth is, for the remaining dependencies, the dependency tree for all of them is just too complicated for me to map out and give you a granular series of installation commands to execute what should otherwise be a straightforward operation.
 
 Regardless of the actual dependency tree, there is a quick and dirty way to install the rest of the entire apt dependency tree. Simply execute the following command, and repeat it as many times as you need until dpkg no longer complains:
 
-` dpkg -i *`
+`dpkg -i *`
 
 What happens here is that dpkg will attempt to install all software packages in the directory. It will inevitably fail, but do not fret. Simply repeat the command until everything is installed.
 
@@ -243,29 +227,10 @@ What happens when we run the command above is that dpkg is attempting to install
 dpkg is simply not as intelligent as something like apt, which would automatically build a dependency map, and install all prerequisite software before attempting to install software dependent on said software.
 
 You might also notice that dpkg itself is part of the .deb files that needed to be installed. Don't worry, this doesn't break anything. We already have dpkg, but are just installing the official package to update its own database because the database never actually contained itself as part of the list of installed packages.
- 
-##### Double checking if everything is installed
- 
-To be absolutely certain, you can execute the following command, which counts how many packages dpkg counts as installed in its database:
-
-`echo $(($(dpkg -l | wc -l)-5))`
-
-If this returns the value 23, then you can correctly assume that everything was installed as intended. 
 
 ### Creating networking configuration files
 
 Before we proceed with updating `apt's` cache, we need to define both the system's networking configuration files, and apt's list of software repositories.
-
-#### /etc/resolv.conf
-
-`/etc/resolv.conf` is a file needed in order for your system to have DNS resolution. Without this file, no resolution typically happens, which makes updating `apt`'s cache of installable packages via `/etc/apt/sources.list` difficult.
-
-```
-cat > /etc/resolv.conf << "EOF"
-nameserver 8.8.8.8
-nameserver 8.8.4.4
-EOF
-```
 
 #### /etc/apt/sources.list
 
@@ -273,20 +238,7 @@ sources.list is a file which `apt` uses to contact the repositories that hold yo
 
 ```
 cat > /etc/apt/sources.list << "EOF"
-# Debian Bullseye main repos
-deb http://httpredir.debian.org/debian/ bullseye main  
-deb-src http://httpredir.debian.org/debian/ bullseye main  
-
-#Debian Bullseye security repos
-deb http://security.debian.org/ bullseye/updates main  
-deb-src http://security.debian.org/ bullseye/updates main  
-
-# non-free plugins
-deb http://http.debian.net/debian/ bullseye non-free contrib main  
-
-# bullseye-updates, previously known as 'volatile'
-deb http://httpredir.debian.org/debian/ bullseye-updates main  
-deb-src http://httpredir.debian.org/debian/ bullseye-updates main
+deb http://ftp.debian.org/debian stable main contrib non-free
 EOF
 ```
 
@@ -315,10 +267,11 @@ EOF
 
 ### Updating apt's package lists
 
-We are now ready to update our list of packages and take full advantage of `apt`. To do this, we update our local keyring of valid Debian developer gnu pgp signatures using `apt-key update`, and then update with `apt-get update`.
+We are now ready to update our list of packages and take full advantage of `apt`. To do this, need a new user called `_apt`, so we don't have to use a sandbox for the packages. Then we update our local keyring of valid Debian developer gnu pgp signatures along with the Debian repositories using `apt update`. `chmod 1777 /tmp` is needed so the user `_apt` can use it.
 ```
-apt-key update
-apt-get update
+useradd _apt
+chmod 1777 /tmp
+apt update
 ```
 
 ### Creating user and group databases
@@ -328,12 +281,12 @@ Before we install more software, we must make sure that our password, group and 
 ##### debianutils
 We install debianutils to provide the `tempfile` command needed by one of `base-passwd`'s installation scripts. Without this command, installation of `base-passwd` will fail.
 
-`apt-get install debianutils`
+`apt install debianutils`
 
 ##### base-passwd 
 We install `base-passwd` to provide standard the standard minimal `/etc/passwd` and `/etc/group` files, which are the same across all debian systems. It does this by running the `update-passwd` binary upon its installation.
 
-`apt-get install base-passwd`
+`apt install base-passwd`
 
 ##### Creating /etc/shadow and /etc/gshadow
 We have to manually create `/etc/shadow` and `/etc/gshadow`, as the `passwd` package will fail to configure if it cannot find these files:
@@ -343,17 +296,17 @@ We have to manually create `/etc/shadow` and `/etc/gshadow`, as the `passwd` pac
 ##### login 
 We then install the `login` package, which gives us the ability to establish new sessions on the system with `login`, privilege escalation with `su`, the linux pluggable authentication module (PAM) files for both said binaries, a fake shell `/bin/nologin`,  and the `/etc/login.defs` file which is essential for group creation. There are more functionalities included with this package, but these are the most mentionable.
 
-`apt-get install login`
+`apt install login`
  
 ##### passwd 
 We then install `passwd` package, which provides the lion's share of utilities and configuration files used to create and manipulate user and group account information.
 
-`apt-get install passwd`
+`apt install passwd`
 
 ##### adduser 
 We must also install the `adduser` package, because this provides us with the default `/etc/adduser.conf` file which will be needed to install new users properly.
 
-`apt-get install adduser`
+`apt install adduser`
 
 ##### Establishing root password and shadowfile entries
 With all the aforementioned utilities and packages installed, our system is now capable of the full functionality of user & group account manipulation.
@@ -451,37 +404,37 @@ EOF
 #### ncurses libraries and binaries
 A large number of command line utilites rely on the ncurses library to provide a text-interface for user interaction over the terminal. These include simple utilities such as `less` and `nano`. Without this library, these utilities will fail to display properly. We must install the complete suite of the ncurses library in order to prevent said errors from occurring:
 
-`apt-get install ncurses-base ncurses-bin ncurses-doc`
+`apt install ncurses-base ncurses-bin ncurses-doc`
 
 #### dialog
 Dialog is a perl module which some scripts attempt to use to provide a text-interface used during configuration or installation. You may have noticed some packages warning you that this utility was non-existent during installation. Let's fix this: 
 
-`apt-get install dialog`
+`apt install dialog`
 
 #### less, vim and nano
 Now that we've installed most of the libraries and utilities needed for terminal utilities, let's install some of the most basic and well-used ones:
 
-`apt-get install less vim nano`
+`apt install less vim nano`
 
 ### Creating the standard filesystem hierarchy on a Debian system
 Let's create the standard folder structure for a debian system. This can be done easily by installing `base-files`. First, we have to remove the `/var/mail` directory though or else it will complain that it already exists.
 
 ```
 rm -rf /var/mail
-apt-get install base-files
+apt install base-files
 ```
 
 ### Building the man documentation system
 Any Linux system typically has a database full of manual pages, accessed by the `man` command. Most programs we've installed already have already added their documentation files in the proper location. All we need to do now is actually install `man` to take advantage of them, and any more that are added as time passes by.
 
-`apt-get install man`
+`apt install man`
 
 ### Installing all remaining essential packages
 We've installed most of the packages, all that is left to do is install the rest of the packages marked with the priority `essential` by the Debian maintainers. Some of these are absolutely essential to system management, and some will barely be used at all. 
 
 To comply with the Debian standard, we must install all of these:
 
-`apt-get install bash bsdutils coreutils dash diffutils e2fsprogs findutils grep gzip hostname libc-bin init mount perl-base sed sysvinit-utils tar util-linux`
+`apt install bash bsdutils coreutils dash diffutils e2fsprogs findutils grep gzip hostname libc-bin init mount perl-base sed sysvinit-utils tar util-linux`
 
 Here follows is a short description of each package installed:
 
@@ -516,7 +469,7 @@ If you want to install Debian's standard kernel, you will want to search for the
 
 ```
 apt-cache search linux-image
-apt-get install (selected image)
+apt install (selected image)
 ```
 
 #### Compiling and installing your own custom kernel
@@ -527,7 +480,7 @@ To do this, you will need a tarball of the Linux kernel source, which you probab
 
 You will also need to install the gcc package (which incidentally installs most other software needed to compile), the libncurses5-dev package (which provides the libraries needed to use the command line configuration utility for the kernel source), the bc package (a language that supports precision numbers), and the make package (the make utility used for compiling the source into binary). 
 
-`apt-get install gcc libncurses5-dev bc make`
+`apt install gcc libncurses5-dev bc make`
 
 Now open up your extracted kernel source. Ensure that there are no stale files left behind from the developers in the source tree:
 
@@ -562,7 +515,7 @@ Copy the completed kernel into the /boot/ directory, and make sure that it's nam
 
 ```
 cp -v arch/x86/boot/bzImage /boot/vmlinuz-(identifier)
-cp -v System.map /boot/System.map-4.4.2
+cp -v System.map /boot/System.map-(identifier)
 cp -v .config /boot/config-(identifier)
 ```
 
@@ -570,7 +523,7 @@ cp -v .config /boot/config-(identifier)
 
 Regardless of if you installed the standard Debian GNU/Linux kernel, or compiled your own, you are going to need to provide your system with the binaries needed to load, remove and manipulate kernel modules. 
 
-`apt-get install kmod `
+`apt install kmod `
 
 The only exception to this case would be if you compiled your own monolithic kernel with no modules, and do not intend on adding any beyond the ones you've already compiled into the kernel (which would generally be the case if you're doing embedded development).
 
@@ -640,13 +593,3 @@ Modify the first entry with the partition location of this system, and the type 
 ### The End
 
 Congratulations! You've finished building your Debian system, and now have the complete range of functionality expected of a Debian system on top of your regular LFS install.
-
-### Comments, suggestions, bugs
-
-If you found this guide useful, or have suggestions, the author would love to hear from you. Email him at 
-
-scottwilliambeasley AT gmail .com . Replace the AT with @, and remove spaces.
-
-Also, contributions or additions to this manual are very much welcomed. You may do so by using this repository:
-
-https://github.com/scottwilliambeasley/debian-from-scratch/
