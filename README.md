@@ -40,11 +40,6 @@ We then use apt to install all base packages functionalities needed for the syst
 
 Let's start off by using our host system to download the packages we need, and place them somewhere inside our $LFS partition.
 
-#### source files
-The only source file you will need to download is the source for dpkg:
-
-[dpkg](http://http.debian.net/debian/pool/main/d/dpkg/dpkg_1.17.27.tar.xz)
-
 #### Needed files
 
 You will need to download the [wget-list](https://raw.githubusercontent.com/maalos/debian-from-scratch/master/wget-list) file and place it inside some directory inside of your `$LFS` partition, prefferably `$LFS/sources/dfs`. Packages inside the `wget-list` file are required to install the entire dependency chain of `apt`. Change into your preffered source directory and run:
@@ -118,6 +113,9 @@ nameserver 8.8.4.4
 EOF
 ```
 
+#### If you have busybox installed...
+Then you probably don't need to build dpkg from source. Just skip "Installing dpkg", and add an extra `--force-depends` to each dpkg command in "Installing apt"
+
 ### Installing required packages for dpkg
 You need 3 more packages installed in your chroot environment (in the following order) for dpkg to build.
 https://www.linuxfromscratch.org/lfs/view/stable/chapter08/zlib.html
@@ -143,14 +141,7 @@ We need to create `dpkg`'s database, which is merely a text file located in `/va
 
 Before we can install `apt`, and use this to automatically install the most of the rest of our system software, we have to install its immediate dependencies on our target system first.
 
-![apt-dependencies.svg](https://raw.githubusercontent.com/maalos/debian-from-scratch/master/images/apt-dependencies.svg)
-##### Figure 2 - The apt dependency tree, one level deep
-
 Each of these immediate dependencies has their own set of dependencies to fulfill. We shall start by completing the dependency tree for `debian-archive-keyring`. Unlike the compilation process needed to install `dpkg`, the process we now use to install software is by installing .`deb` files using `dpkg`. 
-
-#### Installing debian-archive-keyring
-
-So we shall start fulfilling `dpkg`'s dependencies by first by installing `debian-archive-keyring`.
 
 First, we need to install `gcc-12-base`:
 
