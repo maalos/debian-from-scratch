@@ -49,51 +49,51 @@ The only source file you will need to download is the source for dpkg:
 
 You will need to download the following .deb files and place them all in the same directory inside of your `$LFS` partition. Only these .deb files should occupy this directory. These are needed to install the entire dependency chain of `apt`. Open the link, and manually download the .deb file corresponding to your LFS system architecture:
 
-[apt](https://packages.debian.org/jessie/apt)
+[apt](https://packages.debian.org/bullseye/apt)
 
-[debian-archive-keyring](https://packages.debian.org/jessie/debian-archive-keyring)
+[debian-archive-keyring](https://packages.debian.org/bullseye/debian-archive-keyring)
 
-[dpkg](https://packages.debian.org/jessie/dpkg)
+[dpkg](https://packages.debian.org/bullseye/dpkg)
 
-[gcc-4.9-base](https://packages.debian.org/jessie/gcc-4.9-base)
+[gcc-4.9-base](https://packages.debian.org/bullseye/gcc-4.9-base)
 
-[gnupg](https://packages.debian.org/jessie/gnupg)
+[gnupg](https://packages.debian.org/bullseye/gnupg)
 
-[gpgv](https://packages.debian.org/jessie/gpgv)
+[gpgv](https://packages.debian.org/bullseye/gpgv)
 
-[libacl1](https://packages.debian.org/jessie/libacl1)
+[libacl1](https://packages.debian.org/bullseye/libacl1)
 
-[libapt-pkg4.12](https://packages.debian.org/jessie/libapt-pkg4.12)
+[libapt-pkg4.12](https://packages.debian.org/bullseye/libapt-pkg4.12)
 
-[libattr1](https://packages.debian.org/jessie/libattr1)
+[libattr1](https://packages.debian.org/bullseye/libattr1)
 
-[libbz2-1.0](https://packages.debian.org/jessie/libbz2-1.0)
+[libbz2-1.0](https://packages.debian.org/bullseye/libbz2-1.0)
 
-[libc6](https://packages.debian.org/jessie/libc6)
+[libc6](https://packages.debian.org/bullseye/libc6)
 
-[libgcc1](https://packages.debian.org/jessie/libgcc1)
+[libgcc1](https://packages.debian.org/bullseye/libgcc1)
 
-[liblzma5](https://packages.debian.org/jessie/liblzma5)
+[liblzma5](https://packages.debian.org/bullseye/liblzma5)
 
-[libpcre3](https://packages.debian.org/jessie/libpcre3)
+[libpcre3](https://packages.debian.org/bullseye/libpcre3)
 
-[libreadline6](https://packages.debian.org/jessie/libreadline6)
+[libreadline6](https://packages.debian.org/bullseye/libreadline6)
 
-[libselinux1](https://packages.debian.org/jessie/libselinux1)
+[libselinux1](https://packages.debian.org/bullseye/libselinux1)
 
-[libstdc++6](https://packages.debian.org/jessie/libstdc++6)
+[libstdc++6](https://packages.debian.org/bullseye/libstdc++6)
 
-[libtinfo5](https://packages.debian.org/jessie/libtinfo5)
+[libtinfo5](https://packages.debian.org/bullseye/libtinfo5)
 
-[libusb-0.1-4](https://packages.debian.org/jessie/libusb-0.1-4)
+[libusb-0.1-4](https://packages.debian.org/bullseye/libusb-0.1-4)
 
-[multiarch-support](https://packages.debian.org/jessie/multiarch-support)
+[multiarch-support](https://packages.debian.org/bullseye/multiarch-support)
 
-[readline-common](https://packages.debian.org/jessie/readline-common)
+[readline-common](https://packages.debian.org/bullseye/readline-common)
 
-[tar](https://packages.debian.org/jessie/tar)
+[tar](https://packages.debian.org/bullseye/tar)
 
-[zlib1g](https://packages.debian.org/jessie/zlib1g)
+[zlib1g](https://packages.debian.org/bullseye/zlib1g)
 
 
 ## Creating the Debian From Scratch system
@@ -273,20 +273,20 @@ sources.list is a file which `apt` uses to contact the repositories that hold yo
 
 ```
 cat > /etc/apt/sources.list << "EOF"
-# Debian Jessie main repos
-deb http://httpredir.debian.org/debian/ jessie main  
-deb-src http://httpredir.debian.org/debian/ jessie main  
+# Debian Bullseye main repos
+deb http://httpredir.debian.org/debian/ bullseye main  
+deb-src http://httpredir.debian.org/debian/ bullseye main  
 
-#Debian Jessie security repos
-deb http://security.debian.org/ jessie/updates main  
-deb-src http://security.debian.org/ jessie/updates main  
+#Debian Bullseye security repos
+deb http://security.debian.org/ bullseye/updates main  
+deb-src http://security.debian.org/ bullseye/updates main  
 
 # non-free plugins
-deb http://http.debian.net/debian/ jessie non-free contrib main  
+deb http://http.debian.net/debian/ bullseye non-free contrib main  
 
-# jessie-updates, previously known as 'volatile'
-deb http://httpredir.debian.org/debian/ jessie-updates main  
-deb-src http://httpredir.debian.org/debian/ jessie-updates main
+# bullseye-updates, previously known as 'volatile'
+deb http://httpredir.debian.org/debian/ bullseye-updates main  
+deb-src http://httpredir.debian.org/debian/ bullseye-updates main
 EOF
 ```
 
