@@ -69,6 +69,16 @@ http://ftp.debian.org/debian/pool/main/l/lz4/liblz4-1_1.9.4-1_amd64.deb
 http://ftp.debian.org/debian/pool/main/r/readline/libreadline8_8.2-1.3_amd64.deb
 http://ftp.debian.org/debian/pool/main/libs/libselinux/libselinux1_3.4-1+b5_amd64.deb
 http://ftp.debian.org/debian/pool/main/g/gcc-12/libstdc++6_12.2.0-14_amd64.deb
+http://ftp.debian.org/debian/pool/main/g/gnupg2/gpgsm_2.2.40-1.1_amd64.deb
+http://ftp.debian.org/debian/pool/main/libk/libksba/libksba8_1.6.3-2_amd64.deb
+http://ftp.debian.org/debian/pool/main/liba/libassuan/libassuan0_2.5.5-5_amd64.deb
+http://ftp.debian.org/debian/pool/main/g/gnupg2/gpgconf_2.2.40-1.1_amd64.deb
+http://ftp.debian.org/debian/pool/main/g/gnupg2/gpg-wks-server_2.2.40-1.1_amd64.deb
+http://ftp.debian.org/debian/pool/main/g/gnupg2/gpg_2.2.40-1.1_amd64.deb
+http://ftp.debian.org/debian/pool/main/g/gnupg2/gpg-agent_2.2.40-1.1_amd64.deb
+http://ftp.debian.org/debian/pool/main/g/gnupg2/gnupg-l10n_2.2.40-1.1_all.deb
+http://ftp.debian.org/debian/pool/main/p/pinentry/pinentry-curses_1.2.1-1_amd64.deb
+http://ftp.debian.org/debian/pool/main/s/sqlite3/libsqlite3-0_3.40.1-2_amd64.deb
 http://ftp.debian.org/debian/pool/main/n/ncurses/libtinfo6_6.4-4_amd64.deb
 http://ftp.debian.org/debian/pool/main/g/glibc/multiarch-support_2.28-10+deb10u1_amd64.deb
 http://ftp.debian.org/debian/pool/main/r/readline/readline-common_8.2-1.3_all.deb
