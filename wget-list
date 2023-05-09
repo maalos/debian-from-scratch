@@ -1,5 +1,5 @@
 https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_1.21.21.tar.xz
-https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_1.19.8_amd64.deb
+http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.21.21_amd64.deb
 http://ftp.debian.org/debian/pool/main/a/apt/apt_2.7.0_amd64.deb
 http://ftp.debian.org/debian/pool/main/d/debian-archive-keyring/debian-archive-keyring_2023.3_all.deb
 http://ftp.debian.org/debian/pool/main/g/gcc-10/gcc-10-base_10.4.0-7_amd64.deb
